@@ -1,0 +1,269 @@
+:root {
+  --primary-color: #007bff;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+  --bg-color: #f8f9fa;
+  --text-dark: #343a40;
+}
+
+.inventory-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  min-height: auto;
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 24px;
+  color: var(--text-dark);
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid #dbe3ef;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.empty-query-hint {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  font-weight: 600;
+  color: #475569;
+}
+
+.controls {
+  margin-bottom: 25px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.btn-edit {
+  background-color: #f59e0b;
+  color: #fff;
+}
+
+.btn-edit.is-active {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+}
+
+.btn-remove {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.btn-remove.is-active {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+}
+
+.btn-print {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+
+th {
+  background-color: var(--text-dark);
+  color: #fff;
+  font-weight: 500;
+}
+
+.number-col {
+  width: 10%;
+}
+
+.name-col {
+  width: 50%;
+}
+
+.count-col {
+  width: 25%;
+}
+
+.status-col {
+  width: 15%;
+}
+
+.action-col {
+  width: 18%;
+}
+
+.delete-mode-hint {
+  width: 100%;
+  margin: 0 0 12px;
+  color: #8b1d2c;
+  font-weight: 600;
+}
+
+.edit-mode-hint {
+  width: 100%;
+  margin: 0 0 12px;
+  color: #9a6700;
+  font-weight: 600;
+}
+
+.selected-row {
+  background-color: #fff1f2;
+}
+
+.row-delete-btn {
+  background-color: var(--danger-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.row-delete-placeholder {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.row-edit-btn {
+  background-color: #f59e0b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.row-save-btn {
+  background-color: var(--success-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.row-cancel-btn {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.edit-qty-input {
+  max-width: 110px;
+}
+
+.done-btn {
+  background: none;
+  border: 2px solid var(--success-color);
+  color: var(--success-color);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.done-btn.is-done {
+  background: var(--success-color);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .inventory-page {
+    padding: 16px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .controls {
+    width: 100%;
+  }
+}
+
+@media print {
+  .controls {
+    display: none;
+  }
+
+  .delete-mode-hint {
+    display: none;
+  }
+
+  .edit-mode-hint {
+    display: none;
+  }
+
+  .inventory-page {
+    padding: 0;
+    background: #fff;
+  }
+
+  table {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+  }
+
+  th {
+    background-color: #eee !important;
+    color: #000;
+  }
+}
