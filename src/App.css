@@ -5,9 +5,73 @@
   background: linear-gradient(180deg, #f3f6fb 0%, #edf2f7 100%);
 }
 
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(29, 78, 216, 0.18), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #eaf1f9 100%);
+}
+
+.auth-shell-loading {
+  text-align: center;
+}
+
+.auth-loading-text {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 .app-sidebar {
   border-right: 1px solid #d8e0ea;
   background: #ffffff;
+}
+
+.app-session-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #d8e0ea;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.app-session-label,
+.app-session-email {
+  margin: 0;
+}
+
+.app-session-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.app-session-email {
+  margin-top: 4px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.app-signout-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 8px 14px;
+  cursor: pointer;
 }
 
 .app-main {
@@ -37,12 +101,31 @@
     max-height: 45vh;
     overflow: auto;
   }
+
+  .app-session-bar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+  }
 }
 
 @media (max-width: 480px) {
+  .auth-shell {
+    padding: 14px;
+  }
+
   .app-main-title {
     font-size: 1.2rem;
     margin: 4px 0 10px;
     text-align: center;
+  }
+
+  .app-session-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-signout-btn {
+    width: 100%;
   }
 }

@@ -1,4 +1,11 @@
 import { initializeApp } from 'firebase/app';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -12,4 +19,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+export const subscribeToAuthChanges = (callback) =>
+  onAuthStateChanged(auth, callback);
+
+export const signInWithEmail = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+
+export const registerWithEmail = (email, password) =>
+  createUserWithEmailAndPassword(auth, email, password);
+
+export const signOutUser = () => signOut(auth);
