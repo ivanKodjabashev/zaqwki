@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/zaqwki/static/css/main.49758d88.css",
+    "main.js": "/zaqwki/static/js/main.50a18d3c.js",
+    "static/js/453.f1d00cd2.chunk.js": "/zaqwki/static/js/453.f1d00cd2.chunk.js",
+    "index.html": "/zaqwki/index.html",
+    "main.49758d88.css.map": "/zaqwki/static/css/main.49758d88.css.map",
+    "main.50a18d3c.js.map": "/zaqwki/static/js/main.50a18d3c.js.map",
+    "453.f1d00cd2.chunk.js.map": "/zaqwki/static/js/453.f1d00cd2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.49758d88.css",
+    "static/js/main.50a18d3c.js"
+  ]
+}
