@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import App from './App';
 
 jest.mock('./components/QueryExplorer', () => () => <div>Query Explorer</div>);
 jest.mock('./components/main', () => () => <div>Main</div>);
@@ -12,8 +13,6 @@ jest.mock('./firebase', () => ({
     return jest.fn();
   }),
 }));
-
-const App = require('./App').default;
 
 test('renders email sign-in form', async () => {
   render(<App />);
