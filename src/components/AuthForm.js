@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { registerWithEmail, signInWithEmail } from '../firebase';
 import './authForm.css';
 
+const SAVED_EMAIL_KEY = 'zaqwki.savedEmail';
+
 const getAuthErrorMessage = (code) => {
   switch (code) {
     case 'auth/email-already-in-use':
@@ -25,8 +27,21 @@ const getAuthErrorMessage = (code) => {
 
 function AuthForm() {
   const [mode, setMode] = useState('signin');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem(SAVED_EMAIL_KEY) || '';
+    } catch {
+      return '';
+    }
+  });
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(() => {
+    try {
+      return Boolean(localStorage.getItem(SAVED_EMAIL_KEY));
+    } catch {
+      return false;
+    }
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,9 +61,15 @@ function AuthForm() {
 
     try {
       if (isCreateMode) {
-        await registerWithEmail(trimmedEmail, password);
+        await registerWithEmail(trimmedEmail, password, rememberMe);
       } else {
-        await signInWithEmail(trimmedEmail, password);
+        await signInWithEmail(trimmedEmail, password, rememberMe);
+      }
+
+      if (rememberMe) {
+        localStorage.setItem(SAVED_EMAIL_KEY, trimmedEmail);
+      } else {
+        localStorage.removeItem(SAVED_EMAIL_KEY);
       }
     } catch (error) {
       setErrorMessage(getAuthErrorMessage(error.code));
@@ -77,6 +98,7 @@ function AuthForm() {
             <input
               id="auth-email"
               type="email"
+              name="email"
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -88,10 +110,21 @@ function AuthForm() {
             <input
               id="auth-password"
               type="password"
+              name="password"
               autoComplete={isCreateMode ? 'new-password' : 'current-password'}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
+          </label>
+
+          <label className="auth-remember" htmlFor="auth-remember">
+            <input
+              id="auth-remember"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(event) => setRememberMe(event.target.checked)}
+            />
+            <span>Запомни ме</span>
           </label>
 
           {errorMessage && <p className="auth-error">{errorMessage}</p>}
@@ -104,6 +137,12 @@ function AuthForm() {
                 : 'Влез'}
           </button>
         </form>
+
+        <button type="button" className="auth-switch" onClick={toggleMode}>
+          {isCreateMode
+            ? 'Имаш профил? Влез'
+            : 'Нямаш профил? Създай нов'}
+        </button>
 
       </section>
     </div>

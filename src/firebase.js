@@ -1,8 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
@@ -25,10 +28,25 @@ export const db = getFirestore(app);
 export const subscribeToAuthChanges = (callback) =>
   onAuthStateChanged(auth, callback);
 
-export const signInWithEmail = (email, password) =>
-  signInWithEmailAndPassword(auth, email, password);
+const applyAuthPersistence = async (rememberSession) => {
+  await setPersistence(
+    auth,
+    rememberSession ? browserLocalPersistence : browserSessionPersistence,
+  );
+};
 
-export const registerWithEmail = (email, password) =>
-  createUserWithEmailAndPassword(auth, email, password);
+export const signInWithEmail = async (email, password, rememberSession = true) => {
+  await applyAuthPersistence(rememberSession);
+  return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const registerWithEmail = async (
+  email,
+  password,
+  rememberSession = true,
+) => {
+  await applyAuthPersistence(rememberSession);
+  return createUserWithEmailAndPassword(auth, email, password);
+};
 
 export const signOutUser = () => signOut(auth);

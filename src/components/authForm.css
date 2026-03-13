@@ -72,6 +72,21 @@
   font-size: 0.92rem;
 }
 
+.auth-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #334155;
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
+.auth-remember input {
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+}
+
 .auth-submit,
 .auth-switch {
   border: none;
