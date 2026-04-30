@@ -1,7 +1,7 @@
 import { useMainRows } from '../hooks/useMainRows';
 import './main.css';
 
-function Main({ selectedQuery }) {
+function Main({ selectedQuery, onCountChange }) {
 	const {
 		rows,
 		isDeleteMode,
@@ -30,7 +30,7 @@ function Main({ selectedQuery }) {
 		handleSaveEdit,
 		handleToggleDone,
 		handlePrint,
-	} = useMainRows(selectedQuery);
+	} = useMainRows(selectedQuery, onCountChange);
 
 	if (!selectedQuery) {
 		return (
@@ -53,7 +53,7 @@ function Main({ selectedQuery }) {
 					className={`btn btn-edit ${isEditMode ? 'is-active' : ''}`}
 					onClick={handleToggleEditMode}
 				>
-					{isEditMode ? 'Откажи редакция' : 'Edit'}
+					{isEditMode ? 'Откажи редакция' : 'Редакция'}
 				</button>
 				<button
 					type="button"

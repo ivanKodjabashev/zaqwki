@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { useQueryExplorerState } from '../hooks/useQueryExplorerState';
 import './queryExplorer.css';
 
@@ -113,7 +114,7 @@ function FolderGroup({
   );
 }
 
-function QueryExplorer({ onSelectQuery }) {
+const QueryExplorer = forwardRef(function QueryExplorer({ onSelectQuery }, ref) {
   const {
     folders,
     openFolders,
@@ -129,7 +130,12 @@ function QueryExplorer({ onSelectQuery }) {
     handleCancelDraft,
     handleSubmitDraft,
     handleDraftKeyDown,
+    handleUpdateQueryCount,
   } = useQueryExplorerState(onSelectQuery);
+
+  useImperativeHandle(ref, () => ({
+    updateQueryCount: handleUpdateQueryCount,
+  }), [handleUpdateQueryCount]);
 
   return (
     <section className="query-explorer-wrap" aria-label="Stark Query Explorer">
