@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import AuthForm from './components/AuthForm';
 import Main from './components/main';
@@ -8,6 +8,19 @@ import { signOutUser, subscribeToAuthChanges } from './firebase';
 function App() {
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [authUser, setAuthUser] = useState(undefined);
+  const queryExplorerRef = useRef(null);
+  const selectedQueryRef = useRef(null);
+
+  useEffect(() => {
+    selectedQueryRef.current = selectedQuery;
+  }, [selectedQuery]);
+
+  const handleCountChange = useCallback((count) => {
+    const current = selectedQueryRef.current;
+    if (current?.fileKey) {
+      queryExplorerRef.current?.updateQueryCount(current.fileKey, count);
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges((user) => {
@@ -46,13 +59,13 @@ function App() {
             Изход
           </button>
         </div>
-        <QueryExplorer onSelectQuery={setSelectedQuery} />
+        <QueryExplorer ref={queryExplorerRef} onSelectQuery={setSelectedQuery} />
       </aside>
       <main className="app-main">
         <h1 className="app-main-title">
-          {selectedQuery ? `Заявка: ${selectedQuery.name}` : 'Заявката'}
+          {selectedQuery ? `Заявка: ${selectedQuery.name}` : 'Изберете заявка'}
         </h1>
-        <Main selectedQuery={selectedQuery} />
+        <Main selectedQuery={selectedQuery} onCountChange={handleCountChange} />
       </main>
     </div>
   );

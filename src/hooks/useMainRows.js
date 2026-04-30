@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { loadQueryRows, saveQueryRows } from '../services/queryDataService';
 import { printTableOnly } from '../utils/printTableOnly';
 
-export const useMainRows = (selectedQuery) => {
+export const useMainRows = (selectedQuery, onCountChange) => {
   const [rows, setRows] = useState([]);
   const [isRowsLoaded, setIsRowsLoaded] = useState(false);
   const [loadedQueryKey, setLoadedQueryKey] = useState(null);
@@ -137,6 +137,14 @@ export const useMainRows = (selectedQuery) => {
     printTableOnly('inventoryTable');
   };
 
+  // selectedQuery?.fileKey is used as the dep so that updating metadata (e.g. count)
+  // on the same query does not trigger an unnecessary rows reload.
+  const selectedQueryRef = useRef(selectedQuery);
+  useEffect(() => {
+    selectedQueryRef.current = selectedQuery;
+  }, [selectedQuery]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setRows([]);
     setIsRowsLoaded(false);
@@ -149,7 +157,9 @@ export const useMainRows = (selectedQuery) => {
     setNewRowName('');
     setNewRowQuantity('0');
 
-    if (!selectedQuery) {
+    const currentQuery = selectedQueryRef.current;
+
+    if (!currentQuery) {
       setIsRowsLoaded(true);
       setLoadedQueryKey(null);
       return;
@@ -157,9 +167,10 @@ export const useMainRows = (selectedQuery) => {
 
     const loadRows = async () => {
       try {
-        const { queryDocId, rows: loadedRows } = await loadQueryRows(selectedQuery);
+        const { queryDocId, rows: loadedRows } = await loadQueryRows(currentQuery);
         setRows(loadedRows);
         setLoadedQueryKey(queryDocId);
+        onCountChange?.(loadedRows.length);
       } catch (error) {
         console.error('Failed to load query rows:', error);
       } finally {
@@ -168,7 +179,19 @@ export const useMainRows = (selectedQuery) => {
     };
 
     loadRows();
-  }, [selectedQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedQuery?.fileKey]);
+
+  // Update the count in the sidebar whenever rows change after they have been loaded.
+  useEffect(() => {
+    if (!isRowsLoaded || !loadedQueryKey) {
+      return;
+    }
+    onCountChange?.(rows.length);
+    // onCountChange is intentionally omitted from deps: it is a stable ref-backed
+    // callback in App.js, and including it would cause spurious re-runs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, isRowsLoaded, loadedQueryKey]);
 
   useEffect(() => {
     if (!selectedQuery || !isRowsLoaded) {

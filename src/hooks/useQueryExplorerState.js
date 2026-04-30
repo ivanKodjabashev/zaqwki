@@ -188,6 +188,23 @@ export const useQueryExplorerState = (onSelectQuery) => {
     }
   };
 
+  const handleUpdateQueryCount = useCallback((fileKey, count) => {
+    setFolders((prev) => {
+      let hasChange = false;
+      const next = prev.map((folder) => ({
+        ...folder,
+        items: folder.items.map((item) => {
+          if (item.fileKey === fileKey && item.count !== count) {
+            hasChange = true;
+            return { ...item, count };
+          }
+          return item;
+        }),
+      }));
+      return hasChange ? next : prev;
+    });
+  }, []);
+
   const handleAddQuery = () => {
     const targetFolder = activeFolderName || folders[0]?.name;
 
@@ -387,5 +404,6 @@ export const useQueryExplorerState = (onSelectQuery) => {
     handleCancelDraft,
     handleSubmitDraft,
     handleDraftKeyDown,
+    handleUpdateQueryCount,
   };
 };
